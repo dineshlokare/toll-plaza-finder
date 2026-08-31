@@ -5,15 +5,15 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: root
-      POSTGRES_DB: myapp
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: toll_plaza_db
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./migrations/001_init.sql:/docker-entrypoint-initdb.d/001_init.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d myapp"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d toll_plaza_db"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -43,7 +43,7 @@ services:
     environment:
       SERVER_PORT: 8080
       SERVER_MODE: release
-      DATABASE_URL: postgres://postgres:root@postgres:5432/myapp?sslmode=disable
+      DATABASE_URL: postgres://postgres:${DB_PASSWORD:-postgres}@postgres:5432/toll_plaza_db?sslmode=disable
       REDIS_URL: redis://redis:6379/0
       NOMINATIM_BASE_URL: https://nominatim.openstreetmap.org
       OSRM_BASE_URL: https://router.project-osrm.org

@@ -379,7 +379,7 @@ docker-compose up --build
 ### Local Development
 ```powershell
 # 1. Start PostgreSQL & Redis
-docker run -d --name toll_postgres -p 5432:5432 -e POSTGRES_PASSWORD=root -e POSTGRES_DB=toll_plaza_db postgres:18
+docker run -d --name toll_postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=toll_plaza_db postgres:18
 docker run -d --name toll_redis -p 6379:6379 redis:8
 
 # 2. Run Go Application

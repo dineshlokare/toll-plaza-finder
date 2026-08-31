@@ -334,7 +334,7 @@
       </tr>
       <tr>
         <td><strong>PostgreSQL Database</strong></td>
-        <td><code>postgres://postgres:root@localhost:5432/toll_plaza_db</code></td>
+        <td><code>postgres://postgres:postgres@localhost:5432/toll_plaza_db</code></td>
         <td>Stores 2,387 Indian toll plaza records with composite indexing on <code>(latitude, longitude)</code>.</td>
       </tr>
     </tbody>
@@ -431,7 +431,7 @@ distanceFromSource = cumulativeDistance(P_i) + (t_clamped &times; segmentDistanc
   <h2>6. How to Run the Application</h2>
   <ol>
     <li><strong>Start PostgreSQL & Redis:</strong>
-      <pre><code>docker run -d --name toll_postgres -p 5432:5432 -e POSTGRES_PASSWORD=root -e POSTGRES_DB=toll_plaza_db postgres:18
+      <pre><code>docker run -d --name toll_postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=toll_plaza_db postgres:18
 docker run -d --name toll_redis -p 6379:6379 redis:8</code></pre>
     </li>
     <li><strong>Start the Go Backend:</strong>
