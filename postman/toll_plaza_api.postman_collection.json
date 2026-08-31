@@ -1,0 +1,122 @@
+{
+  "info": {
+    "_postman_id": "c1f7a4b2-9d32-4e89-a5c1-toll-plazas-api",
+    "name": "Toll Plazas Between Two Pincodes API",
+    "description": "REST API to calculate routes between Indian pincodes and discover toll plazas along the highway with Redis caching and PostGIS.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Bengaluru (560064) to Pune (411045) - Spec Benchmark",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"sourcePincode\": \"560064\",\n  \"destinationPincode\": \"411045\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/toll-plazas",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "v1", "toll-plazas"]
+        },
+        "description": "Calculates the NH48 route from Bengaluru to Pune and retrieves all toll plazas along the way."
+      },
+      "response": []
+    },
+    {
+      "name": "2. Delhi (110001) to Bengaluru (560001)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"sourcePincode\": \"110001\",\n  \"destinationPincode\": \"560001\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/toll-plazas",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "v1", "toll-plazas"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "3. Error Case - Invalid Pincode",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"sourcePincode\": \"010001\",\n  \"destinationPincode\": \"560001\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/toll-plazas",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "v1", "toll-plazas"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "4. Error Case - Same Source & Destination",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"sourcePincode\": \"110001\",\n  \"destinationPincode\": \"110001\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/toll-plazas",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "v1", "toll-plazas"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "5. Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/health",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["health"]
+        }
+      },
+      "response": []
+    }
+  ]
+}

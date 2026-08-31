@@ -1,0 +1,61 @@
+services:
+  postgres:
+    image: postgres:18
+    container_name: toll_plaza_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: myapp
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./migrations/001_init.sql:/docker-entrypoint-initdb.d/001_init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d myapp"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:8
+    container_name: toll_plaza_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: toll_plaza_api
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      SERVER_PORT: 8080
+      SERVER_MODE: release
+      DATABASE_URL: postgres://postgres:root@postgres:5432/myapp?sslmode=disable
+      REDIS_URL: redis://redis:6379/0
+      NOMINATIM_BASE_URL: https://nominatim.openstreetmap.org
+      OSRM_BASE_URL: https://router.project-osrm.org
+      TOLL_BUFFER_METERS: 500
+      TOLL_DEDUPLICATION_METERS: 1000
+      CSV_FILE_PATH: ./toll_plaza_india.csv
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+  redisdata:
